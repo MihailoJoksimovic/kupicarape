@@ -1,0 +1,62 @@
+{% extends "layout.twig" %}
+
+
+{% block content %}
+
+    <style type="text/css">
+    </style>
+
+    <h1>Trebaju vam carape?</h1>
+
+    <div id="pick-socks">
+        <div class="row">
+        {% for sock in socks %}
+            {% if ((loop.index % 2) == 1) %}
+                </div>
+                <div class="row">
+            {% endif %}
+
+            <div class="col-md-3 ">
+                <a data-scroll data-options='{"easing":"linear"}' href="#signup">
+                    <div>
+                        <div>
+                            <img src="{{ asset('images/black_long_socks.jpg ') }}" />
+                        </div>
+
+                        {{ sock.name }}
+                    </div>
+                </a>
+            </div>
+
+        {% endfor %}
+                    </div>
+
+    </div>
+
+    <div style="height: 350px">
+
+    </div>
+
+    <div id="signup">
+        <h1>Unesite Vas Mail kako bi mogli da stupimo u kontakt sa Vama</h1>
+
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            </div>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+    </div>
+
+    <div style="height: 750px">
+
+    </div>
+
+    <script>
+        smoothScroll.init();
+    </script>
+{% endblock %}
+
