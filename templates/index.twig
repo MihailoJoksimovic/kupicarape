@@ -4,32 +4,61 @@
 {% block content %}
 
     <style type="text/css">
+        #signup {
+            background-color: #eee;
+            min-height: 300px;
+            text-align: center;
+        }
+
+        #footer {
+            color: white;
+            width: 100%;
+            min-height: 150px;
+            background-color: black;
+            padding-top: 15px;
+        }
     </style>
 
-    <h1>Trebaju vam carape?</h1>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Trebaju Vam Carape?</h1>
+            <p>Neki bolan tekst ovde tipa - da li ste se probudili jutros i niste mogli da nadjete ciste carape?</p>
+            <p><a data-scroll class="btn btn-primary btn-lg" href="#pick-socks" role="button">Saznajte više</a></p>
+        </div>
 
-    <div id="pick-socks">
+    </div>
+
+    <div id="pick-socks" class="container">
         <div class="row">
-        {% for sock in socks %}
-            {% if ((loop.index % 2) == 1) %}
-                </div>
-                <div class="row">
-            {% endif %}
+            <h2>KupiCarape je Servis za expressno narucivanje i dostavu carapa</h2>
+        </div>
 
-            <div class="col-md-3 ">
-                <a data-scroll data-options='{"easing":"linear"}' href="#signup">
-                    <div>
-                        <div>
-                            <img src="{{ asset('images/black_long_socks.jpg ') }}" />
-                        </div>
 
-                        {{ sock.name }}
-                    </div>
-                </a>
+        <div class="row">
+            <h4>Izaberite Carape koje zelite da narucite:</h4>
+            <div class="row">
+                {% for sock in socks %}
+                {% if ((loop.index % 2) == 1) %}
             </div>
+            <div class="row">
+                {% endif %}
 
-        {% endfor %}
-                    </div>
+                <div class="col-md-3 ">
+                    <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items">
+                        <div>
+                            <div>
+                                <img src="{{ asset('images/black_long_socks.jpg ') }}" />
+                            </div>
+
+                            {{ sock.name }}
+                        </div>
+                    </a>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
 
     </div>
 
@@ -37,26 +66,76 @@
 
     </div>
 
-    <div id="signup">
-        <h1>Unesite Vas Mail kako bi mogli da stupimo u kontakt sa Vama</h1>
+    <div id="signup" class="container-fluid center-block">
+        <div class="jumbotron">
+            <h2>Unesite Vaš Mail:</h2>
 
-        <form>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            <div id="signup-success" class="alert alert-success" style="display: none;">
+                Hvala Vam na vremenu! Neko iz našeg tima će Vas kontaktirati putem E-Maila za dalje informacije
             </div>
 
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+            <form id="signup-form" onsubmit="return false;">
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <input name="email" type="email" class="form-control input-lg" id="email" placeholder="Vasa E-Mail Adresa">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-lg btn-success btn-block">Dalje >></button>
+                    </div>
 
+                    <input id="socks_type" type="hidden" name="socks_type" value="" />
+
+                </div>
+
+
+            </form>
+        </div>
     </div>
 
-    <div style="height: 750px">
+    <div id="footer" class="container">
+        <div class="row">
+            <p style="text-align: center">Copyright (c) 2015 KupiCarape.com. Sva prava zadrzana.</p>
+        </div>
 
+
+        <ul style="list-style-type: none;">
+            <li>O Nama</li>
+            <li>Kontakt</li>
+            <li>Jos neko sranje</li>
+        </ul>
     </div>
 
     <script>
         smoothScroll.init();
+    </script>
+
+    <script>
+        $('.socks_items').click(function(item) {
+            var id = $(this).attr('data-id');
+
+            $('#socks_type').val(id);
+        });
+
+        $('#signup-form').on('submit', function() {
+            var data = {};
+
+            $('#signup-form input').each(function(index, obj) {
+                var key = $(this).attr('name');
+                var val = $(this).val();
+
+                data[key]   = val;
+            });
+
+            $.post(
+                    '{{ url('signup') }}',
+                    data,
+                    onSignupSuccess
+            );
+        })
+
+        onSignupSuccess = function() {
+            $('#signup-success').show();
+        }
     </script>
 {% endblock %}
 

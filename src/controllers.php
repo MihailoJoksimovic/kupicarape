@@ -11,18 +11,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 $app->get('/', function () use ($app) {
     $socks = array(
         array(
+            'id'    => 'crne_dugacke',
             'name'  => 'Crne Dugacke',
             'image' => 'black_long_socks.jpg'
         ),
         array(
+            'id'    => 'crne_kratke',
             'name'  => 'Crne Kratke',
             'image' => 'black_long_socks.jpg'
         ),
         array(
+            'id'    => 'bele_kratke',
             'name'  => 'Bele Kratke',
             'image' => 'black_long_socks.jpg'
         ),
         array(
+            'id'    => 'bele_dugacke',
             'name'  => 'Bele Dugacke',
             'image' => 'black_long_socks.jpg'
         ),
@@ -32,6 +36,10 @@ $app->get('/', function () use ($app) {
 })
 ->bind('homepage')
 ;
+
+$app->post('/signup', function() use ($app) {
+    return true;
+})->bind('signup');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
