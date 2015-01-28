@@ -23,4 +23,29 @@ $app['twig'] = $app->extend('twig', function ($twig, $app) {
     return $twig;
 });
 
+$app['mongo.client']    = function($c) {
+    $host = $c['mongo.host'];
+    $client = new MongoClient($host);
+
+    return $client;
+};
+
+$app['mongo.db']    = function($c) {
+    $dbName = $c['mongo.db_name'];
+
+    /** @var $client MongoClient */
+    $client = $c['mongo.client'];
+
+    return $client->$dbName;
+};
+
+$app['mongo.collection.signups'] = function($c) {
+    $collectionName = 'signups';
+
+    /** @var $db MongoDB */
+    $db = $c['mongo.db'];
+
+    return $db->selectCollection($collectionName);
+};
+
 return $app;

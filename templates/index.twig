@@ -70,15 +70,26 @@
         <div class="jumbotron">
             <h2>Unesite Vaš Mail:</h2>
 
-            <div id="signup-success" class="alert alert-success" style="display: none;">
+            <div id="signup-success" class="alert alert-success signup-alert" style="display: none;">
                 Hvala Vam na vremenu! Neko iz našeg tima će Vas kontaktirati putem E-Maila za dalje informacije
             </div>
 
+            <div id="signup-error" class="alert alert-danger signup-alert" style="display: none;">
+                Ups, doslo je do greške i problem je prosledjen našem timu.
+                Za svaki slučaj, proverite samo da li ste dobro uneli Vašu E-Mail adresu :-)
+            </div>
+
+            <div id="signup-error-email" class="alert alert-danger signup-alert" style="display: none;">
+                Ups, izgleda da niste uneli Vašu E-Mail adresu :-)
+            </div>
+
             <form id="signup-form" onsubmit="return false;">
-                <div class="form-group row">
+                <div class="form-group row ">
+
                     <div class="col-md-8">
-                        <input name="email" type="email" class="form-control input-lg" id="email" placeholder="Vasa E-Mail Adresa">
+                        <input id="email" name="email" type="email" class="form-control input-lg " id="email" placeholder="Unesite Vašu E-Mail Adresu ovde" />
                     </div>
+
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-lg btn-success btn-block">Dalje >></button>
                     </div>
@@ -116,8 +127,23 @@
             $('#socks_type').val(id);
         });
 
+
+
         $('#signup-form').on('submit', function() {
+            hideFormError();
+
+            var email   = $('#email').val();
+
+            if (email.length === 0) {
+                showFormError();
+
+                return false;
+            }
+
             var data = {};
+
+            // Hide all alert DIVs
+            $('.signup-alert').hide(100);
 
             $('#signup-form input').each(function(index, obj) {
                 var key = $(this).attr('name');
@@ -130,12 +156,39 @@
                     '{{ url('signup') }}',
                     data,
                     onSignupSuccess
-            );
-        })
+            ).fail(onSignupFailure);
+        });
+
+        hideAllSignupAlerts = function() {
+            $('.signup-alert').hide();
+        };
+
+        hideFormError   = function() {
+            hideAllSignupAlerts();
+
+            $('#signup-form').removeClass('has-error');
+        };
+
+        showFormError   = function() {
+            hideAllSignupAlerts();
+
+            $('#signup-error-email').show(100);
+            $('#signup-form').addClass('has-error');
+        };
 
         onSignupSuccess = function() {
-            $('#signup-success').show();
-        }
+            hideAllSignupAlerts();
+
+            $('#signup-success').show(100);
+        };
+
+        onSignupFailure = function() {
+            hideAllSignupAlerts();
+
+            $('#signup-error').show(100);
+        };
+
+
     </script>
 {% endblock %}
 

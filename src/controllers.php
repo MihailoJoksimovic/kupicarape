@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function () use ($app) {
+
     $socks = array(
         array(
             'id'    => 'crne_dugacke',
@@ -37,8 +38,29 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
-$app->post('/signup', function() use ($app) {
-    return true;
+$app->post('/signup', function(Request $request) use ($app) {
+    $data       = $request->request->all();
+    $headers    = $request->headers->all();
+
+    /** @var $signupsCollection \MongoCollection */
+    $signupsCollection = $app['mongo.collection.signups'];
+
+    $response = true;
+
+//    $response = new Response('Exception occurred.', 401);
+
+    try {
+        $signupsCollection->insert(array(
+            'headers'   => $headers,
+            'data'      => $data,
+            'date'      => new MongoDate()
+        ));
+    } catch (\Exception $e) {
+        $response = new Response('Exception occurred.', 401);
+    }
+
+
+    return $response;
 })->bind('signup');
 
 $app->error(function (\Exception $e, $code) use ($app) {
