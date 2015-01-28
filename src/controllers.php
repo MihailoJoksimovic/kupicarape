@@ -8,7 +8,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
+
+    $app->log(
+        sprintf("New visitor: '%s'", $request->getClientIp()),
+        array(
+            'new_visitor'   => true,
+            'headers'       => $request->headers->all()
+        )
+    );
 
     $socks = array(
         array(
@@ -42,12 +50,27 @@ $app->post('/signup', function(Request $request) use ($app) {
     $data       = $request->request->all();
     $headers    = $request->headers->all();
 
+    $email      = $request->get('email');
+    $socksType  = $request->get('socks_type');
+
+    $app->log(
+        sprintf(
+            "User '%s' submitted form; Email: '%s'; Selected socks: '%s'",
+            $request->getClientIp(),
+            $email,
+            $socksType
+        ),
+        array(
+            'signup'        => true,
+            'form_data'     => $data,
+            'headers'       => $headers
+        )
+    );
+
     /** @var $signupsCollection \MongoCollection */
     $signupsCollection = $app['mongo.collection.signups'];
 
     $response = true;
-
-//    $response = new Response('Exception occurred.', 401);
 
     try {
         $signupsCollection->insert(array(
@@ -56,6 +79,21 @@ $app->post('/signup', function(Request $request) use ($app) {
             'date'      => new MongoDate()
         ));
     } catch (\Exception $e) {
+        $app->log(
+            sprintf(
+                "Exception has occurred when user '%s' submitted data. Exception text: '%s'",
+                $request->getClientIp(),
+                $e->getMessage()
+            ),
+            array(
+                'exception'             => true,
+                'signup_form_exception' => true,
+                'form_data'             => $data,
+                'request_headers'       => $headers
+            ),
+            \Monolog\Logger::ALERT
+        );
+
         $response = new Response('Exception occurred.', 401);
     }
 
