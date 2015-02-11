@@ -20,23 +20,23 @@ $app->get('/', function (Request $request) use ($app) {
     $socks = array(
         array(
             'id'    => 'crne_dugacke',
-            'name'  => 'Crne Dugacke',
-            'image' => 'black_socks_2.jpeg'
+            'name'  => 'Crne Dugačke',
+            'image' => 'black_socks_2_thumb.jpeg'
         ),
         array(
             'id'    => 'crne_kratke',
             'name'  => 'Crne Kratke',
-            'image' => 'black_socks_short_1.jpg'
+            'image' => 'black_socks_short_1_thumb.jpg'
         ),
         array(
             'id'    => 'bele_dugacke',
-            'name'  => 'Bele Dugacke',
-            'image' => 'white_socks_long_1.jpg'
+            'name'  => 'Bele Dugačke',
+            'image' => 'white_socks_long_1_thumb.jpg'
         ),
         array(
-            'id'    => 'bele_dugacke',
+            'id'    => 'bele_kratke',
             'name'  => 'Bele Kratke',
-            'image' => 'white_socks_short_1.jpg'
+            'image' => 'white_socks_short_1_thumb.jpg'
         ),
 
     );
