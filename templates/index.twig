@@ -36,10 +36,12 @@
         }
 
         #pick-socks {
+            background-color: #f1eeef;
             padding: 15px 0px;
         }
 
         .socks-thumb {
+            /*border: 1px solid gray;*/
             min-height: 200px;
         }
 
@@ -92,26 +94,29 @@
 
     </div>
 
-    <div id="pick-socks" class="container">
+    <div id="pick-socks" class="container-fluid">
         <div class="row">
 
             <div id="inner" style="width: 50%; position: relative; margin: 0 auto; text-align: center;">
                 <h1>Koje čarape Vam trebaju:</h1>
-                <div class="row">
+                <div class="row" style="">
                     {% for sock in socks %}
                     {% if ((loop.index % 2) == 1) %}
-                </div>
-                <div class="row">
+                        </div>
+                        <div class="splitter" style="height: 30px"></div>
+                        <div class="row">
                     {% endif %}
 
                     <div class="col-md-6 ">
                         <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items">
                             <div>
                                 <div class="socks-thumb">
-                                    <img src="{{ asset('images/' ~ sock.image) }}" />
+                                    <img style="width:300px; height: 300px;" src="{{ asset('images/' ~ sock.image) }}" />
                                 </div>
 
-                                {{ sock.name }}
+                                <h2>
+                                    {{ sock.name }}
+                                </h2>
                             </div>
                         </a>
                     </div>

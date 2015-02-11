@@ -21,23 +21,24 @@ $app->get('/', function (Request $request) use ($app) {
         array(
             'id'    => 'crne_dugacke',
             'name'  => 'Crne Dugacke',
-            'image' => 'black_long_socks.jpg'
+            'image' => 'black_socks_2.jpeg'
         ),
         array(
             'id'    => 'crne_kratke',
             'name'  => 'Crne Kratke',
-            'image' => 'black-short-socks.jpg'
-        ),
-        array(
-            'id'    => 'bele_kratke',
-            'name'  => 'Bele Kratke',
-            'image' => 'black_long_socks.jpg'
+            'image' => 'black_socks_short_1.jpg'
         ),
         array(
             'id'    => 'bele_dugacke',
             'name'  => 'Bele Dugacke',
-            'image' => 'black_long_socks.jpg'
+            'image' => 'white_socks_long_1.jpg'
         ),
+        array(
+            'id'    => 'bele_dugacke',
+            'name'  => 'Bele Kratke',
+            'image' => 'white_socks_short_1.jpg'
+        ),
+
     );
 
     return $app['twig']->render('index.twig', array('socks' => $socks));
