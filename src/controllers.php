@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', function (Request $request) use ($app) {
-
     $app->log(
         sprintf("New visitor: '%s'", $request->getClientIp()),
         array(
@@ -27,7 +26,7 @@ $app->get('/', function (Request $request) use ($app) {
         array(
             'id'    => 'crne_kratke',
             'name'  => 'Crne Kratke',
-            'image' => 'black_long_socks.jpg'
+            'image' => 'black-short-socks.jpg'
         ),
         array(
             'id'    => 'bele_kratke',

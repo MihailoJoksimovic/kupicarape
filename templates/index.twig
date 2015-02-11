@@ -4,6 +4,10 @@
 {% block content %}
 
     <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
         #signup {
             background-color: #eee;
             min-height: 300px;
@@ -13,16 +17,76 @@
         #footer {
             color: white;
             width: 100%;
-            min-height: 150px;
+            min-height: 75px;
             background-color: black;
             padding-top: 15px;
         }
+
+        #jumbotron {
+            padding-top: 25px;
+            background-image: url("images/bg-sample-4.jpg");
+            background-position: center, right;
+            background-repeat:no-repeat;
+            background-size: 100% auto;
+            min-height: 550px;
+        }
+
+        #jumbotron h1 {
+            padding-top:10%;
+        }
+
+        #pick-socks {
+            padding: 15px 0px;
+        }
+
+        .socks-thumb {
+            min-height: 200px;
+        }
+
+        /*#menu {*/
+        /*width: 100%;*/
+        /*height: 45px;*/
+        /*}*/
+
+        /*        media queries*/
+        @media screen and (max-width: 1330px) {
+            #jumbotron {
+                min-height: 450px;
+            }
+        }
+        @media screen and (max-width: 1110px) {
+            #jumbotron {
+                min-height: 400px;
+                background-position: top, right;
+                background-size: cover;
+            }
+        }
+        @media screen and (max-width: 980px) {
+            #jumbotron {
+                min-height: 350px;
+            }
+        }
+        @media screen and (max-width: 770px) {
+            #jumbotron {
+                min-height: 300px;
+
+            }
+            @media screen and (max-width: 550px) {
+                #jumbotron {
+                    min-height: 300px;
+                }
+            }
+        }
     </style>
 
-    <div class="jumbotron">
+    <div id="menu">
+
+    </div>
+
+    <div class="jumbotron" id="jumbotron">
         <div class="container">
-            <h1>Trebaju Vam Carape?</h1>
-            <p>Neki bolan tekst ovde tipa - da li ste se probudili jutros i niste mogli da nadjete ciste carape?</p>
+            <h1>Trebaju Vam Čarape?</h1>
+            <p>Probudili ste se jutros i shvatili da opet nemate <strong>čistih čarapa?</strong></p>
             <p><a data-scroll class="btn btn-primary btn-lg" href="#pick-socks" role="button">Saznajte više</a></p>
         </div>
 
@@ -30,45 +94,41 @@
 
     <div id="pick-socks" class="container">
         <div class="row">
-            <h2>KupiCarape je Servis za expressno narucivanje i dostavu carapa</h2>
-        </div>
 
-
-        <div class="row">
-            <h4>Izaberite Carape koje zelite da narucite:</h4>
-            <div class="row">
-                {% for sock in socks %}
-                {% if ((loop.index % 2) == 1) %}
-            </div>
-            <div class="row">
-                {% endif %}
-
-                <div class="col-md-3 ">
-                    <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items">
-                        <div>
-                            <div>
-                                <img src="{{ asset('images/black_long_socks.jpg ') }}" />
-                            </div>
-
-                            {{ sock.name }}
-                        </div>
-                    </a>
+            <div id="inner" style="width: 50%; position: relative; margin: 0 auto; text-align: center;">
+                <h1>Koje čarape Vam trebaju:</h1>
+                <div class="row">
+                    {% for sock in socks %}
+                    {% if ((loop.index % 2) == 1) %}
                 </div>
+                <div class="row">
+                    {% endif %}
 
-                {% endfor %}
+                    <div class="col-md-6 ">
+                        <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items">
+                            <div>
+                                <div class="socks-thumb">
+                                    <img src="{{ asset('images/' ~ sock.image) }}" />
+                                </div>
+
+                                {{ sock.name }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
-
-    </div>
-
-    <div style="height: 350px">
 
     </div>
 
     <div id="signup" class="container-fluid center-block">
         <div class="jumbotron">
             <h2>Unesite Vaš Mail:</h2>
+
+            <h4>Unesite Vaš mail kako bi mogli da Vas kontaktiramo čim pokrenemo servis za dostavu čarapa.</h4>
 
             <div id="signup-success" class="alert alert-success signup-alert" style="display: none;">
                 Hvala Vam na vremenu! Neko iz našeg tima će Vas kontaktirati putem E-Maila za dalje informacije
@@ -88,10 +148,13 @@
 
                     <div class="col-md-8">
                         <input id="email" name="email" type="email" class="form-control input-lg " id="email" placeholder="Unesite Vašu E-Mail Adresu ovde" />
+                        <div style="text-align: left">
+                            * Vaš mail ćemo korisiti <strong>isključivo</strong> kako bi smo mogli da Vas kontaktiramo u vezi porudžbine.
+                        </div>
                     </div>
 
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-lg btn-success btn-block">Dalje >></button>
+                        <button type="submit" class="btn btn-lg btn-success btn-block">Pošalji >></button>
                     </div>
 
                     <input id="socks_type" type="hidden" name="socks_type" value="" />
@@ -107,13 +170,6 @@
         <div class="row">
             <p style="text-align: center">Copyright (c) 2015 KupiCarape.com. Sva prava zadrzana.</p>
         </div>
-
-
-        <ul style="list-style-type: none;">
-            <li>O Nama</li>
-            <li>Kontakt</li>
-            <li>Jos neko sranje</li>
-        </ul>
     </div>
 
     <script>
