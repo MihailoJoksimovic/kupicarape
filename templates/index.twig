@@ -12,6 +12,7 @@
             background-color: #eee;
             min-height: 300px;
             text-align: center;
+            margin: 15px 0px;
         }
 
         #footer {
@@ -44,11 +45,6 @@
             /*border: 1px solid gray;*/
             min-height: 200px;
         }
-
-        /*#menu {*/
-        /*width: 100%;*/
-        /*height: 45px;*/
-        /*}*/
 
         /*        media queries*/
         @media screen and (max-width: 1330px) {
@@ -110,7 +106,7 @@
                     {% endif %}
 
                     <div class="col-md-6 ">
-                        <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items">
+                        <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items" onclick="$('#signup .jumbotron').effect('highlight', {}, 3000);">
                             <div>
                                 <div class="socks-thumb">
                                     <img style="width:300px; height: 300px;" src="{{ asset('images/' ~ sock.image) }}" />
@@ -135,7 +131,11 @@
         <div class="jumbotron">
             <h2>Unesite Vaš Mail:</h2>
 
+            <br/>
+
             <h4>Unesite Vaš mail kako bi mogli da Vas kontaktiramo čim pokrenemo servis za dostavu čarapa.</h4>
+
+            <br/>
 
             <div id="signup-success" class="alert alert-success signup-alert" style="display: none;">
                 Hvala Vam na vremenu! Neko iz našeg tima će Vas kontaktirati putem E-Maila za dalje informacije
