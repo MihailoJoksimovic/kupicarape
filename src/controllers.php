@@ -73,11 +73,23 @@ $app->post('/signup', function(Request $request) use ($app) {
     $response = true;
 
     try {
-        $signupsCollection->insert(array(
+
+        $signupData = array(
             'headers'   => $headers,
             'data'      => $data,
             'date'      => new MongoDate()
-        ));
+        );
+
+        $signupsCollection->insert($signupData);
+
+        /** @var $mailer Swift_Mailer*/
+        $mailer = $app['mailer'];
+
+        $message = \Swift_Message::newInstance();
+
+        $message->setSender('daemon@kupicarape.com')->setTo($app['mailing.notifications'])->setSubject('[NEW_SIGNUP] New Signup Received')->setBody(print_r($signupData, true));
+
+        $mailer->send($message);
     } catch (\Exception $e) {
         $app->log(
             sprintf(

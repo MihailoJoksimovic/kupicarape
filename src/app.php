@@ -19,6 +19,7 @@ $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile'   => __DIR__.'/../var/logs/app_criticals.log',
     'monolog.level'     => \Monolog\Logger::CRITICAL
@@ -82,5 +83,7 @@ $app['monolog'] = $app->extend('monolog', function($monolog, $app) {
 
     return $monolog;
 });
+
+$app['swiftmailer.transport'] = Swift_MailTransport::newInstance();
 
 return $app;
