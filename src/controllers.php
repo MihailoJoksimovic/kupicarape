@@ -87,7 +87,9 @@ $app->post('/signup', function(Request $request) use ($app) {
 
         $message = \Swift_Message::newInstance();
 
-        $message->setSender('daemon@kupicarape.com')->setTo($app['mailing.notifications'])->setSubject('[NEW_SIGNUP] New Signup Received')->setBody(print_r($signupData, true));
+        $subject = sprintf("[NEW_SIGNUP] New Signup Received - %s", $email);
+
+        $message->setFrom('daemon@kupicarape.com')->setTo($app['mailing.notifications'])->setSubject($subject)->setBody(print_r($signupData, true));
 
         $mailer->send($message);
     } catch (\Exception $e) {
