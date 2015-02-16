@@ -21,8 +21,8 @@ $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app->register(new MonologServiceProvider(), array(
-    'monolog.logfile'   => __DIR__.'/../var/logs/app_criticals.log',
-    'monolog.level'     => \Monolog\Logger::CRITICAL
+//    'monolog.logfile' => __DIR__.'/../var/logs/silex_dev.log',
+    'monolog.logfile' => '/dev/null',
 ));
 $app->register(new Silex\Provider\SessionServiceProvider());
 
