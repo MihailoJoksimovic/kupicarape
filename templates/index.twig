@@ -77,6 +77,76 @@
         }
     </style>
 
+    <!-- Loading, please wait dialog -->
+    <div class="modal fade" id="pleaseWaitPopup" tabindex="-1" role="dialog" aria-labelledby="enterYourEmail" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Molimo sačekajte</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    Vaš izbor se prosledjuje na server, molimo pričekajte nekoliko sekundi ...
+
+                    <p style="margin-top: 10px">
+                        <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enter E-mail Pop-up -->
+    <div class="modal fade" id="enterEmailPopup" tabindex="-1" role="dialog" aria-labelledby="enterYourEmail" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="signup-form" onsubmit="return false;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Hvala! :-)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="success-part-1">Odlično, Vaš izbor je upisan u bazu. Kako bi smo mogli da Vas kontaktiramo radi dogovora oko detalja, molimo Vas da unesete Vašu E-Mail adresu u polje ispod.</p>
+
+                        <div id="signup-success" class="alert alert-success signup-alert" style="display: none;">
+                            Odlično, to je to! Očekujte E-Mail od našeg tima u narednih 24h :-)
+                        </div>
+
+                        <div id="signup-error" class="alert alert-danger signup-alert" style="display: none;">
+                            Ups, doslo je do greške i problem je prosledjen našem timu.
+                            Za svaki slučaj, proverite samo da li ste dobro uneli Vašu E-Mail adresu :-)
+                        </div>
+
+                        <div id="signup-error-email" class="alert alert-danger signup-alert" style="display: none;">
+                            Ups, izgleda da niste uneli Vašu E-Mail adresu :-)
+                        </div>
+
+
+                            <div class="form-group row ">
+
+                                <div class="col-md-12">
+                                    <input id="email" name="email" type="email" class="form-control input-lg " id="email" placeholder="Unesite Vašu E-Mail Adresu ovde" />
+                                </div>
+
+                                <input id="socks_type" type="hidden" name="socks_type" value="" />
+
+                            </div>
+
+                            <small>Nakon unosa Vaše mail-adrese, kliknite na zeleno dugme "Potvrdi" koje se nalazi ispod ovog teksta.</small>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default pre-submit-btn" data-dismiss="modal">Odustani</button>
+                        <button type="submit" class="btn btn-success pre-submit-btn">Potrdi</button>
+                        <button type="submit" class="btn btn-default post-submit-btn btn-block" data-dismiss="modal" style="display: none;">Zatvori Ovaj Prozor</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="menu">
 
     </div>
@@ -106,7 +176,7 @@
                     {% endif %}
 
                     <div class="col-md-6 ">
-                        <a data-scroll data-id="{{ sock.id }}" data-options='{"easing":"linear"}' href="#signup" class="socks_items" onclick="$('#signup .jumbotron').effect('highlight', {}, 3000);">
+                        <a data-id="{{ sock.id }}" class="socks_items">
                             <div>
                                 <div class="socks-thumb">
                                     <img style="width:300px; height: 300px;" src="{{ asset('images/' ~ sock.image) }}" />
@@ -127,6 +197,7 @@
 
     </div>
 
+    {#
     <div id="signup" class="container-fluid center-block">
         <div class="jumbotron">
             <h2>Unesite Vaš Mail:</h2>
@@ -172,6 +243,7 @@
             </form>
         </div>
     </div>
+    #}
 
     <div id="footer" class="container">
         <div class="row">
@@ -188,6 +260,24 @@
             var id = $(this).attr('data-id');
 
             $('#socks_type').val(id);
+
+            // Show "Please wait" Dialog
+
+            $('#pleaseWaitPopup').modal();
+
+
+            // After few seconds close the Please Wait popup and show "Enter Your Email" dialog
+            var secondsToWait   = 2;
+
+            var afterTimeoutFn  = function() {
+                $('#pleaseWaitPopup').modal('hide');
+            };
+
+            $('#pleaseWaitPopup').on('hidden.bs.modal', function (e) {
+                $("#enterEmailPopup").modal();
+            });
+
+            window.setTimeout(afterTimeoutFn, secondsToWait * 1000);
         });
 
 
@@ -242,7 +332,12 @@
         onSignupSuccess = function() {
             hideAllSignupAlerts();
 
+            $('#success-part-1').hide(100);
+
             $('#signup-success').show(100);
+
+            $('.pre-submit-btn').hide();
+            $('.post-submit-btn').show();
         };
 
         onSignupFailure = function() {
@@ -251,6 +346,17 @@
             $('#signup-error').show(100);
         };
 
+        $('#enterEmailPopup').on('hidden.bs.modal', function() {
+            // Restore Signup Pop-Up to original state
+
+            hideAllSignupAlerts();
+
+            $('#success-part-1').show();
+            $('#signup-success').hide();
+            $('.pre-submit-btn').show();
+            $('.post-submit-btn').hide();
+
+        });
 
     </script>
 {% endblock %}
